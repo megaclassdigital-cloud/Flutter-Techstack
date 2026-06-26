@@ -8,6 +8,8 @@ void main() {
     await tester.pumpWidget(const TechstackHubApp());
 
     expect(find.text('TechStack'), findsOneWidget);
-    expect(find.text('Software Catalog, Elevated'), findsOneWidget);
+    expect(find.text('Software Catalog & Elevated'), findsOneWidget);
+    expect(find.text('Welcome'), findsOneWidget);
+    expect(find.text('To My Software'), findsOneWidget);
   });
 }
