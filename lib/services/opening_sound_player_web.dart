@@ -8,10 +8,6 @@ var _played = false;
 var _retryAttached = false;
 
 Future<void> playOpeningSound({bool allowRetryOnInteraction = false}) async {
-  if (html.window.sessionStorage['techstack_opening_sound_started'] == '1') {
-    _played = true;
-    return;
-  }
   if (_played) return;
   final audio =
       html.AudioElement(_soundAssetUrl)
@@ -20,7 +16,6 @@ Future<void> playOpeningSound({bool allowRetryOnInteraction = false}) async {
   try {
     await audio.play();
     _played = true;
-    html.window.sessionStorage['techstack_opening_sound_started'] = '1';
   } catch (_) {
     if (!allowRetryOnInteraction || _retryAttached) return;
     _retryAttached = true;

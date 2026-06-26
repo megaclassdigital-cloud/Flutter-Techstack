@@ -171,6 +171,7 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _welcomeFade;
   late Animation<double> _catalogFade;
   late Animation<double> _softwareFade;
+  bool _soundStarted = false;
 
   @override
   void initState() {
@@ -193,7 +194,7 @@ class _SplashScreenState extends State<SplashScreen>
       parent: _controller,
       curve: const Interval(0.60, 0.80, curve: Curves.easeOutCubic),
     );
-    OpeningSoundPlayer.playOnFirstOpen();
+    _controller.addListener(_playOpeningSoundAtOnePercent);
     _controller.forward().then((_) {
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
@@ -210,6 +211,12 @@ class _SplashScreenState extends State<SplashScreen>
         ),
       );
     });
+  }
+
+  void _playOpeningSoundAtOnePercent() {
+    if (_soundStarted || _controller.value < 0.01) return;
+    _soundStarted = true;
+    OpeningSoundPlayer.playOnFirstOpen();
   }
 
   Animation<double> _intervalFade(
@@ -244,6 +251,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void dispose() {
+    _controller.removeListener(_playOpeningSoundAtOnePercent);
     _controller.dispose();
     super.dispose();
   }

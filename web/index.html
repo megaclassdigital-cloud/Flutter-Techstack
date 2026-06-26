@@ -34,42 +34,6 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <script>
-    (function () {
-      const soundUrl = 'assets/harudusfx.mp3';
-      const startedKey = 'techstack_opening_sound_started';
-      let retryAttached = false;
-
-      function markStarted() {
-        try {
-          window.sessionStorage.setItem(startedKey, '1');
-        } catch (_) {}
-      }
-
-      function playOpeningSound(allowRetry) {
-        try {
-          if (window.sessionStorage.getItem(startedKey) === '1') return;
-        } catch (_) {}
-
-        const audio = new Audio(soundUrl);
-        audio.volume = 0.5;
-        audio.preload = 'auto';
-        audio.play()
-          .then(markStarted)
-          .catch(function () {
-            if (!allowRetry || retryAttached) return;
-            retryAttached = true;
-            window.addEventListener('pointerdown', function retry() {
-              window.removeEventListener('pointerdown', retry);
-              playOpeningSound(false);
-            }, { once: true });
-          });
-      }
-
-      window.techstackPlayOpeningSound = playOpeningSound;
-      playOpeningSound(true);
-    })();
-  </script>
   <!--
     You can customize the "flutter_bootstrap.js" script.
     This is useful to provide a custom configuration to the Flutter loader
